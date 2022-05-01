@@ -4,7 +4,8 @@ var ShareDB = require('sharedb');
 var WebSocket = require('ws');
 var WebSocketJSONStream = require('@teamwork/websocket-json-stream');
 
-var backend = new ShareDB();
+const db = require('sharedb-mongo')('mongodb://0.0.0.0:27017/test');
+var backend = new ShareDB({db: db});
 createDoc(startServer);
 
 // Create initial document then fire callback
