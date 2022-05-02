@@ -6,16 +6,23 @@ var WebSocketJSONStream = require('@teamwork/websocket-json-stream');
 
 const db = require('sharedb-mongo')('mongodb://0.0.0.0:27017/test');
 var backend = new ShareDB({db: db});
+
+backend.use('apply', (context, next) => {
+  console.log('context: ', context.op)
+  console.log('context: ', context.snapshot)
+  next()
+})
+
 createDoc(startServer);
 
-// Create initial document then fire callback
 function createDoc(callback) {
   var connection = backend.connect();
-  var doc = connection.get('examples', 'counter');
+  var doc = connection.get('examples4', 'counter');
   doc.fetch(function(err) {
     if (err) throw err;
     if (doc.type === null) {
-      doc.create({numClicks: 0}, callback);
+      // doc.create({title: 'default title', contents: '', public: false}, json1.type.uri, callback);
+      doc.create({title: 'default title', contents: '', public: false}, callback);
       return;
     }
     callback();
@@ -23,12 +30,10 @@ function createDoc(callback) {
 }
 
 function startServer() {
-  // Create a web server to serve files and listen to WebSocket connections
   var app = express();
   app.use(express.static('static'));
   var server = http.createServer(app);
 
-  // Connect any incoming WebSocket connection to ShareDB
   var wss = new WebSocket.Server({server: server});
   wss.on('connection', function(ws) {
     var stream = new WebSocketJSONStream(ws);
