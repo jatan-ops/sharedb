@@ -20,7 +20,8 @@
     "reconnecting-websocket": "^4.2.0",
     "sharedb": "^2.2.5",
     "sharedb-mongo": "^1.0.0",
-    "ws": "^7.2.0"
+    "ws": "^7.2.0",
+    "socket.io": "^4.5.0"
   },
   "devDependencies": {
     "browserify": "^16.5.0"
